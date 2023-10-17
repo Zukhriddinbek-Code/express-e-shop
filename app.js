@@ -11,6 +11,8 @@ const shopRoute = require("./routes/shop");
 app.use(bodyParser.urlencoded({ extended: false }));
 //Returns middleware that only parses urlencoded bodies and only looks at requests where the Content-Type header matches the type option
 
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/admin", adminRoute);
 
 app.use(shopRoute);

@@ -2,8 +2,11 @@ const express = require("express");
 const path = require("path");
 const rootDir = require("./util/path");
 
-const app = express();
 const bodyParser = require("body-parser");
+const app = express();
+
+app.set("view engine", "pub");
+app.set("views", "views");
 
 const adminData = require("./routes/admin");
 const shopRoute = require("./routes/shop");

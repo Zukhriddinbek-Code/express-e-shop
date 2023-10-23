@@ -22,7 +22,7 @@ app.use(shopRoute);
 
 //404 error page
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(rootDir, "views", "error.html"));
+  res.status(404).render("404");
 });
 
 app.listen(3000);

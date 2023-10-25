@@ -25,6 +25,16 @@ module.exports = class Product {
   }
 
   static fetchAll() {
-    return products;
+    const p = path.join(
+      path.dirname(require.main.filename),
+      "data",
+      "products.json"
+    );
+    fs.readFile(p, (err, fileCnt) => {
+      if (err) {
+        return [];
+      }
+      return JSON.parse(fileCnt);
+    });
   }
 };

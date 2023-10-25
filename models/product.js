@@ -12,6 +12,16 @@ module.exports = class Product {
       "data",
       "products.json"
     );
+    fs.readFile(p, (err, fileCnt) => {
+      let products = [];
+      if (!err) {
+        products = JSON.parse(fileCnt);
+      }
+      products.push(this);
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        console.log(err);
+      });
+    });
   }
 
   static fetchAll() {

@@ -61,6 +61,8 @@ exports.postCard = (req, res, next) => {
   res.redirect("/cart");
 };
 
+exports.postCartDelete = (req, res, next) => {};
+
 exports.getOrders = (req, res, next) => {
   res.render("shop/orders", {
     path: "/orders",

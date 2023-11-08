@@ -15,7 +15,7 @@ module.exports = class Product {
   static deleteById(id) {}
 
   static fetchAll() {
-    return db.execute("SELECT * FROM products", {});
+    return db.execute("SELECT * FROM products");
   }
 
   static findById(id) {}

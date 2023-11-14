@@ -100,9 +100,14 @@ exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   // Product.deleteById(prodId);
   Product.findByPk(prodId)
-    .then()
+    .then((product) => {
+      return product.destroy();
+    })
+    .then((result) => {
+      console.log("DESTROYED");
+      res.redirect("/admin/products");
+    })
     .catch((err) => {
       console.log(err);
     });
-  res.redirect("/admin/products");
 };

@@ -29,11 +29,24 @@ Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Product);
 
 sequelize
-  .sync({ force: true }) //this will overwrite the info with above relation of tables
+  // .sync({ force: true }) //this will overwrite the info with above relation of tables
+  .sync()
   .then((res) => {
-    // console.log(res);
+    return User.findByPk(1);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Max", email: "zuhriddin@mail.ru" });
+    }
+    return user;
+  })
+  .then((user) => {
+    console.log(user);
     app.listen(3000);
   })
   .catch((err) => {
     console.log(err);
   }); //creates tables in sql database
+
+// // console.log(res);
+// app.listen(3000);

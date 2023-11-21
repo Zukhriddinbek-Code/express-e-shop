@@ -22,7 +22,7 @@ exports.postAddProduct = (req, res, next) => {
       description: description,
       // userId: req.user.id,
     })
-    .then((res) => {
+    .then((result) => {
       console.log(res);
       res.redirect("/admin/products");
     })

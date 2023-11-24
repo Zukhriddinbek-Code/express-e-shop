@@ -1,12 +1,14 @@
-const app = express();
 const express = require("express");
+const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
 
 const errorController = require("./controllers/error");
-const User = require("./models/user");
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
+// const User = require("./models/user");
+const mongoConnect = require("./util/database");
+
+// const adminRoutes = require("./routes/admin");
+// const shopRoutes = require("./routes/shop");
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -27,9 +29,12 @@ app.use((req, res, next) => {
   //   });
 });
 
-app.use("/admin", adminRoutes);
-app.use(shopRoutes);
+// app.use("/admin", adminRoutes);
+// app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-app.listen(3000);
+mongoConnect((client) => {
+  console.log(client);
+  app.listen(3000);
+});

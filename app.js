@@ -7,7 +7,7 @@ const errorController = require("./controllers/error");
 // const User = require("./models/user");
 const mongoConnect = require("./util/database");
 
-// const adminRoutes = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 // const shopRoutes = require("./routes/shop");
 
 app.set("view engine", "ejs");
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   //   });
 });
 
-// app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 // app.use(shopRoutes);
 
 app.use(errorController.get404);

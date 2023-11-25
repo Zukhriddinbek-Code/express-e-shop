@@ -3,6 +3,8 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
 
+let _db;
+
 //connecting to mongodb cloud
 const mongoConnect = (callback) => {
   // cqc2jZjrxTHfH56e password for zuhriddin_ganiev user
@@ -11,14 +13,23 @@ const mongoConnect = (callback) => {
   )
     .then((client) => {
       console.log("CONNECTED");
+      _db = client.db();
       callback(client);
     })
     .catch((err) => {
       console.log(err);
     });
+
+  const getDb = () => {
+    if (_db) {
+      return _db;
+    }
+    throw "No database found!";
+  };
 };
 
-module.exports = mongoConnect;
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
 
 /*
 //just sql

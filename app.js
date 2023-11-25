@@ -5,7 +5,7 @@ const path = require("path");
 
 const errorController = require("./controllers/error");
 // const User = require("./models/user");
-const mongoConnect = require("./util/database");
+const mongoConnect = require("./util/database").mongoConnect;
 
 const adminRoutes = require("./routes/admin");
 // const shopRoutes = require("./routes/shop");
@@ -27,6 +27,7 @@ app.use((req, res, next) => {
   //   .catch((err) => {
   //     console.log(err);
   //   });
+  next();
 });
 
 app.use("/admin", adminRoutes);

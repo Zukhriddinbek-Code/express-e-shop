@@ -14,11 +14,11 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findAll({ where: { id: prodId } })
-    .then((products) => {
+  Product.findById(prodId)
+    .then((product) => {
       res.render("shop/product-detail", {
-        product: products[0],
-        pageTitle: products[0].title,
+        product: product,
+        pageTitle: product.title,
         path: "/products",
       });
     })

@@ -14,16 +14,11 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   //automatically added method for user sql obj
-  req.user
-    .createProduct({
-      title: title,
-      imageUrl: imageUrl,
-      price: price,
-      description: description,
-      // userId: req.user.id,
-    })
+  const product = new Product(title, price, description, imageUrl);
+  product
+    .save()
     .then((result) => {
-      console.log(res);
+      console.log("Created Products");
       res.redirect("/admin/products");
     })
     .catch((err) => {

@@ -18,7 +18,14 @@ class User {
     const db = getDb();
     return db
       .collection("users")
-      .findOne({ _id: new mongodb.ObjectId(userId) }); //no need to next(), this will give the only element we want
+      .findOne({ _id: new mongodb.ObjectId(userId) })
+      .then((user) => {
+        console.log(user);
+        return user;
+      })
+      .catch((err) => {
+        console.log(err);
+      }); //no need to next(), this will give the only element we want
   }
 }
 

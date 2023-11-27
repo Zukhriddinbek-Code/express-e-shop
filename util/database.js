@@ -14,10 +14,11 @@ const mongoConnect = (callback) => {
     .then((client) => {
       console.log("CONNECTED");
       _db = client.db();
-      callback(client);
+      callback();
     })
     .catch((err) => {
       console.log(err);
+      throw err;
     });
 };
 

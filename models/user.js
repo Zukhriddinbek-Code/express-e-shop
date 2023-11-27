@@ -1,39 +1,24 @@
 const mongodb = require("mongodb");
-const getDb = require("../util/database");
+const getDb = require("../util/database").getDb;
 
 class User {
   constructor(username, email) {
-    this.username = username;
+    this.name = username;
     this.email = email;
   }
 
   //saving user into db
   save() {
     const db = getDb();
-    return db
-      .collection("products")
-      .insertOne(this)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return db.collection("users").insertOne(this);
   }
 
   //finding user
   static findById(userId) {
     const db = getDb();
     return db
-      .collection("products")
-      .find({ _id: new mongodb.ObjectId(userId) })
-      .next()
-      .then((user) => {
-        return user;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .collection("users")
+      .findOne({ _id: new mongodb.ObjectId(userId) }); //no need to next(), this will give the only element we want
   }
 }
 

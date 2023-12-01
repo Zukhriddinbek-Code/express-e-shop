@@ -6,7 +6,7 @@ class User {
     this.name = username;
     this.email = email;
     this.cart = cart; //{items: [ ]}
-    this._id = id;
+    this._id = id; // ? new mongodb.ObjectId(id) : null;
   }
 
   //saving user into db
@@ -20,13 +20,15 @@ class User {
     //   return cartProds._id === product._id;
     // });
 
-    const updatedCart = { items: [{ ...product, quantity: 1 }] };
+    const updatedCart = {
+      items: [{ productId: new mongodb.ObjectId(product._id), quantity: 1 }],
+    };
     const db = getDb();
     return db
       .collection("users")
       .updateOne(
         { _id: new mongodb.ObjectId(this._id) },
-        { $et: { cart: updatedCart } }
+        { $set: { cart: updatedCart } }
       );
   }
 

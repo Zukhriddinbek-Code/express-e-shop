@@ -79,12 +79,18 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  const order = new Order({
-    product: {},
-    user: { name: req.user.name, userId: req.user },
-  });
   req.user
-    .addOrder()
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items.map((i) => {
+        return { quantity: i.quantity, product: i.productId };
+      });
+      const order = new Order({
+        products: products,
+        user: { name: req.user.name, userId: req.user },
+      });
+      return order.save();
+    })
     .then((result) => {
       res.redirect("/orders");
     })

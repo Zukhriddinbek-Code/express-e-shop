@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Order = require("../models/order");
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -78,6 +79,10 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+  const order = new Order({
+    product: {},
+    user: { name: req.user.name, userId: req.user },
+  });
   req.user
     .addOrder()
     .then((result) => {

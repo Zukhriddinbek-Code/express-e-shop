@@ -1,60 +1,56 @@
-const express = require("express");
+const path = require('path');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const errorController = require('./controllers/error');
+const User = require('./models/user');
+
 const app = express();
-const bodyParser = require("body-parser");
-const path = require("path");
-const mongoose = require("mongoose");
 
-const errorController = require("./controllers/error");
-const User = require("./models/user");
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
-
-app.set("view engine", "ejs");
-app.set("views", "views");
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
-
-//creating a middleware for user
-//this will only register a middleware for incoming request
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findById("65704bd15f9c3a9ccf14ced2")
-    .then((user) => {
+  User.findById('5bab316ce0a7c75f783cb8a8')
+    .then(user => {
       req.user = user;
       next();
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 });
 
-app.use("/admin", adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
 
 mongoose
   .connect(
-    "mongodb+srv://zuhriddin_ganiev:npdHaJuxSjeCV10K@cluster-zuhriddin.65mbqpl.mongodb.net/shop?retryWrites=true&w=majority"
+    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/shop?retryWrites=true'
   )
-  .then((result) => {
-    User.findOne().then((user) => {
+  .then(result => {
+    User.findOne().then(user => {
       if (!user) {
         const user = new User({
-          name: "Bek",
-          email: "zuhriddin@mail.ru",
-          cart: { items: [] },
+          name: 'Max',
+          email: 'max@test.com',
+          cart: {
+            items: []
+          }
         });
         user.save();
       }
     });
-
     app.listen(3000);
   })
-  .catch((err) => {
+  .catch(err => {
     console.log(err);
   });
-
-// npdHaJuxSjeCV10K

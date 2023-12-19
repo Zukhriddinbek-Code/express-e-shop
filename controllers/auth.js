@@ -27,3 +27,11 @@ exports.postLogin = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+//when logout button is clicked, we want to delete the session and cookie
+exports.postLogout = (req, res, next) => {
+  req.session.destroy((err) => {
+    console.log(err);
+    res.redirect("/");
+  });
+};

@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res, next) => {
   // const isLoggedIn = req.get("Cookie").trim().split("=")[1] === "true";
@@ -51,9 +52,13 @@ exports.postSignup = (req, res, next) => {
       if (userDoc) {
         res.redirect("/signup");
       }
+      //takes string to be hashed, value to be rounded //async operation
+      return bcrypt.hash(password, 12);
+    })
+    .then((hashedPassword) => {
       const user = new User({
         email: email,
-        password: password,
+        password: hashedPassword,
         cart: { items: [] },
       });
       return user.save();

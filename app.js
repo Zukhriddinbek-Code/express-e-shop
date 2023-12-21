@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 //store session mongodb
 const MongoDBStore = require("connect-mongodb-session")(session);
+//csrf token
+const csrf = require("csurf");
 
 const MONGODB_URI =
   "mongodb+srv://zuhriddin_ganiev:8aEZ5BqVm5OVUA4U@cluster-zuhriddin.65mbqpl.mongodb.net/shop?retryWrites=true&w=majority";
@@ -18,6 +20,9 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions",
 });
+
+//initialize csrf token protection
+const csrfProtection = csrf();
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -36,6 +41,8 @@ app.use(
     store: store,
   })
 );
+
+app.use(csrfProtection);
 
 app.use((req, res, next) => {
   if (!req.session.user) {

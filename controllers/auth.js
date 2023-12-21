@@ -11,6 +11,14 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
+exports.getSignup = (req, res, next) => {
+  res.render("auth/signup", {
+    path: "/signup",
+    pageTitle: "Signup",
+    isAuthenticated: false,
+  });
+};
+
 exports.postLogin = (req, res, next) => {
   //setting a cookie
   // max=age=10 (10secs and cookie will go away from client's browser)
@@ -39,3 +47,5 @@ exports.postLogout = (req, res, next) => {
     res.redirect("/");
   });
 };
+
+exports.postSignup = (req, res, next) => {};

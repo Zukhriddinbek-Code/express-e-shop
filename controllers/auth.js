@@ -40,6 +40,27 @@ exports.postLogin = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+exports.postSignup = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+
+  //first check if there is a user with this email in db
+  User.findOne({ email: email })
+    .then((userDoc) => {
+      if (userDoc) {
+        res.redirect("/signup");
+      }
+      const user = new User({
+        email: email,
+        password: password,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 //when logout button is clicked, we want to delete the session and cookie
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
@@ -47,5 +68,3 @@ exports.postLogout = (req, res, next) => {
     res.redirect("/");
   });
 };
-
-exports.postSignup = (req, res, next) => {};

@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const flash = require("connect-flash");
 //store session mongodb
 const MongoDBStore = require("connect-mongodb-session")(session);
 //csrf token
@@ -43,6 +44,9 @@ app.use(
 );
 
 app.use(csrfProtection);
+//The flash is a special area of the session used for storing messages.
+// Messages are written to the flash and cleared after being displayed to the user.
+app.use(flash());
 
 app.use((req, res, next) => {
   if (!req.session.user) {

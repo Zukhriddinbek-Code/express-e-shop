@@ -99,6 +99,20 @@ exports.postSignup = (req, res, next) => {
         })
         .then((result) => {
           res.redirect("/login");
+          return emailjs.send(
+            "service_gdx1jac",
+            "template_j643mrm",
+            {
+              from_name: "Zuhriddin-Shop Administration",
+              message:
+                "Please refer to further instructions on how to set two-factor authentication",
+              to_email: email,
+            },
+            "w10dMPbI55i1qERtg"
+          );
+        })
+        .catch((err) => {
+          console.log(err);
         });
     })
     .catch((err) => {

@@ -1,5 +1,18 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const AWS = require("@aws-sdk/client-ses");
+const nodemailer = require("nodemailer");
+
+const ses = new AWS.SES({
+  apiVersion: "2010-12-01",
+  region: "ap-northeast-2",
+  credentials: {
+    accessKeyId: "AKIATR63BQ4BWE7VYVXD",
+    secretAccessKey: "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",
+  },
+});
+
+const transporter = nodemailer.createTransport({ SES: { ses, aws: AWS } });
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash("error");
@@ -99,17 +112,12 @@ exports.postSignup = (req, res, next) => {
         })
         .then((result) => {
           res.redirect("/login");
-          return emailjs.send(
-            "service_gdx1jac",
-            "template_j643mrm",
-            {
-              from_name: "Zuhriddin-Shop Administration",
-              message:
-                "Please refer to further instructions on how to set two-factor authentication",
-              to_email: email,
-            },
-            "w10dMPbI55i1qERtg"
-          );
+          return transporter.sendMail({
+            to: email,
+            from: "zuhriddinganiyev2000@gmail.com",
+            subject: "Signup Succeeded!",
+            html: "<h1>Your account was successfully created</h1>",
+          });
         })
         .catch((err) => {
           console.log(err);

@@ -4,5 +4,8 @@
 # production
 /build
 
+./env
+
+/env
 #sfsfsdsds
 #wdw

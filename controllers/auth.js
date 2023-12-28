@@ -2,13 +2,16 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const AWS = require("@aws-sdk/client-ses");
 const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+const { aws_access_key, aws_secret_access_key, aws_ses_region } = process.env;
 
 const ses = new AWS.SES({
   apiVersion: "2010-12-01",
-  region: "ap-northeast-2",
+  region: aws_ses_region,
   credentials: {
-    accessKeyId: "AKIATR63BQ4BQLZYSV7H",
-    secretAccessKey: "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",
+    accessKeyId: aws_access_key,
+    secretAccessKey: aws_secret_access_key,
   },
 });
 

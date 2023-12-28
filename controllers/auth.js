@@ -7,8 +7,8 @@ const ses = new AWS.SES({
   apiVersion: "2010-12-01",
   region: "ap-northeast-2",
   credentials: {
-    accessKeyId: "AKIATR63BQ4BWE7VYVXD",
-    secretAccessKey: "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",
+    accessKeyId: "AKIATR63BQ4BQLZYSV7H",
+    secretAccessKey: "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",
   },
 });
 
@@ -116,7 +116,7 @@ exports.postSignup = (req, res, next) => {
             to: email,
             from: "zuhriddinganiyev2000@gmail.com",
             subject: "Signup Succeeded!",
-            html: "<h1>Your account was successfully created</h1>",
+            html: "<h1>Your account was successfully created!!!</h1>",
           });
         })
         .catch((err) => {

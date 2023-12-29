@@ -193,3 +193,17 @@ exports.postReset = (req, res, next) => {
       });
   });
 };
+
+exports.getNewPassword = (req, res, next) => {
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+  res.render("auth/new-password", {
+    path: "/new-password",
+    pageTitle: "New Password",
+    errorMessage: message,
+  });
+};

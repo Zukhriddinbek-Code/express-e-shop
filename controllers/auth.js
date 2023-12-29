@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const AWS = require("@aws-sdk/client-ses");
@@ -150,5 +151,45 @@ exports.getReset = (req, res, next) => {
     path: "/reset",
     pageTitle: "Reset Password",
     errorMessage: message,
+  });
+};
+
+exports.postReset = (req, res, next) => {
+  const email = req.body.email;
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+      req.flash("error", "Something went wrong! Please Try Again!");
+      return res.redirect("/reset");
+    }
+
+    //if we dont have error
+    const token = buffer.toString("hex");
+    User.findOne({ email: email })
+      .then((user) => {
+        if (!user) {
+          req.flash("error", "No account found with this email!");
+          return res.redirect("/reset");
+        }
+        user.resetToken = token;
+        user.resetTokenExpiration = Date.now() + 3600000;
+        return user.save();
+      })
+      .then((result) => {
+        res.redirect("/");
+        //lets send token reset email
+        transporter.sendMail({
+          to: email,
+          from: "zuhriddinganiyev2000@gmail.com",
+          subject: "Password Reset!",
+          html: `
+          <p>You requested a password reset</p>
+          <p>Click this <a href='http://localhost:3000/reset/${token}'>link</a> to set a new password.</p>
+          `,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 };

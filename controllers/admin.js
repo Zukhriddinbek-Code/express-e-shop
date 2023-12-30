@@ -1,6 +1,12 @@
 const Product = require("../models/product");
 
 exports.getAddProduct = (req, res, next) => {
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   if (!req.session.isLoggedIn) {
     return res.redirect("/login");
   }
@@ -8,6 +14,7 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    errorMessage: message,
   });
 };
 
@@ -43,14 +50,24 @@ exports.getEditProduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product.findById(prodId)
     .then((product) => {
+      if (product.userId !== req.user._id) {
+        req.flash("error", "You are not authorized to edit this product!");
+      }
       if (!product) {
         return res.redirect("/");
+      }
+      let message = req.flash("error");
+      if (message.length > 0) {
+        message = message[0];
+      } else {
+        message = null;
       }
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
         product: product,
+        errorMessage: message,
       });
     })
     .catch((err) => console.log(err));
@@ -81,7 +98,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.find({ userId: req.user._id })
+  Product.find()
     // .select('title price -_id')
     // .populate('userId', 'name')
     .then((products) => {

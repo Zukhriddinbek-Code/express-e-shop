@@ -7,7 +7,7 @@ const AWS = require("@aws-sdk/client-ses");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-const { validationResult } = require("express-validator/check");
+const { validationResult } = require("express-validator");
 
 const { aws_access_key, aws_secret_access_key, aws_ses_region } = process.env;
 

@@ -71,7 +71,7 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 app.use(errorController.get404);
-
+// { useNewUrlParser: true }
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {

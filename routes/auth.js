@@ -16,7 +16,23 @@ router.get("/reset", authController.getReset);
 
 router.get("/reset/:token", authController.getNewPassword);
 
-router.post("/login", authController.postLogin);
+router.post(
+  "/login",
+  [
+    body("email")
+      .isEmail()
+      .withMessage("Please enter a valid email address")
+      .custom((value, { req }) => {
+        //checking for user email existence asynchronously
+        return User.findOne({ email: value }).then((user) => {
+          if (!user) {
+            return Promise.reject("No email found with this email address");
+          }
+        });
+      }),
+  ],
+  authController.postLogin
+);
 
 router.post("/logout", authController.postLogout);
 

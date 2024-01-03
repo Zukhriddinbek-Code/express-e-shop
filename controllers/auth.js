@@ -1,9 +1,13 @@
 const crypto = require("crypto");
-const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+
+const User = require("../models/user");
+
 const AWS = require("@aws-sdk/client-ses");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
+
+const { validationResult } = require("express-validator/check");
 
 const { aws_access_key, aws_secret_access_key, aws_ses_region } = process.env;
 
@@ -92,6 +96,18 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    //422 the server was unable to process the request because it contains invalid data.
+    return res.status(422).render("auth/signup", {
+      path: "/signup",
+      pageTitle: "Signup",
+      errorMessage: errors.array(),
+    });
+  }
 
   //first check if there is a user with this email in db
   User.findOne({ email: email })

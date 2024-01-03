@@ -95,10 +95,8 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
 
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     console.log(errors.array());
     //422 the server was unable to process the request because it contains invalid data.
@@ -110,38 +108,26 @@ exports.postSignup = (req, res, next) => {
   }
 
   //first check if there is a user with this email in db
-  User.findOne({ email: email })
-    .then((userDoc) => {
-      if (userDoc) {
-        req.flash(
-          "error",
-          "Already have an account with this Email! Try with another one!"
-        );
-        return res.redirect("/signup");
-      }
-      //takes string to be hashed, value to be rounded //async operation
-      return bcrypt
-        .hash(password, 12)
-        .then((hashedPassword) => {
-          const user = new User({
-            email: email,
-            password: hashedPassword,
-            cart: { items: [] },
-          });
-          return user.save();
-        })
-        .then((result) => {
-          res.redirect("/login");
-          return transporter.sendMail({
-            to: email,
-            from: "zuhriddinganiyev2000@gmail.com",
-            subject: "Signup Succeeded!",
-            html: "<h1>Your account was successfully created!!!</h1>",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+
+  //takes string to be hashed, value to be rounded //async operation
+  return bcrypt
+    .hash(password, 12)
+    .then((hashedPassword) => {
+      const user = new User({
+        email: email,
+        password: hashedPassword,
+        cart: { items: [] },
+      });
+      return user.save();
+    })
+    .then((result) => {
+      res.redirect("/login");
+      return transporter.sendMail({
+        to: email,
+        from: "zuhriddinganiyev2000@gmail.com",
+        subject: "Signup Succeeded!",
+        html: "<h1>Your account was successfully created!!!</h1>",
+      });
     })
     .catch((err) => {
       console.log(err);

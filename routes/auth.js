@@ -2,6 +2,8 @@ const express = require("express");
 
 const { check, body } = require("express-validator");
 
+const User = require("../models/user");
+
 const authController = require("../controllers/auth");
 
 const router = express.Router();
@@ -25,10 +27,13 @@ router.post(
       .isEmail()
       .withMessage("Please enter a valid email address!")
       .custom((value, { req }) => {
-        if (value === "test@test.com") {
-          throw new Error("This email address is forbidden!");
-        }
-        return true;
+        return User.findOne({ email: value }).then((userDoc) => {
+          if (userDoc) {
+            return Promise.reject(
+              "Already have an account with this Email! Try with another one!"
+            );
+          }
+        });
       }),
     //default error message for all validators
     body("password", "Please enter 5 chars and only numbers and text")

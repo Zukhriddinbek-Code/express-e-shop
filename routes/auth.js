@@ -19,17 +19,11 @@ router.get("/reset/:token", authController.getNewPassword);
 router.post(
   "/login",
   [
-    body("email")
-      .isEmail()
-      .withMessage("Please enter a valid email address")
-      .custom((value, { req }) => {
-        //checking for user email existence asynchronously
-        return User.findOne({ email: value }).then((user) => {
-          if (!user) {
-            return Promise.reject("No email found with this email address");
-          }
-        });
-      }),
+    body("email").isEmail().withMessage("Please enter a valid email address"),
+    body(
+      "password",
+      "Your password should be more than 5 chars long!"
+    ).isLength({ min: 5 }),
   ],
   authController.postLogin
 );

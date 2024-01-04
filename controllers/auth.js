@@ -48,6 +48,7 @@ exports.getSignup = (req, res, next) => {
     path: "/signup",
     pageTitle: "Signup",
     errorMessage: message,
+    oldInput: { email: "", password: "", confirmPassword: "" },
   });
 };
 

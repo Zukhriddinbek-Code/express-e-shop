@@ -19,11 +19,13 @@ router.get("/reset/:token", authController.getNewPassword);
 router.post(
   "/login",
   [
-    body("email").isEmail().withMessage("Please enter a valid email address"),
-    body(
-      "password",
-      "Your password should be more than 5 chars long!"
-    ).isLength({ min: 5 }),
+    body("email")
+      .isEmail()
+      .withMessage("Please enter a valid email address")
+      .normalizeEmail(),
+    body("password", "Your password should be more than 5 chars long!")
+      .isLength({ min: 5 })
+      .trim(),
   ],
   authController.postLogin
 );
@@ -44,17 +46,21 @@ router.post(
             );
           }
         });
-      }),
+      })
+      .normalizeEmail(),
     //default error message for all validators
     body("password", "Please enter 5 chars and only numbers and text")
       .isLength({ min: 5 })
-      .isAlphanumeric(),
-    body("confirmPassword").custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Password does not match!");
-      }
-      return true;
-    }),
+      .isAlphanumeric()
+      .trim(),
+    body("confirmPassword")
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error("Password does not match!");
+        }
+        return true;
+      })
+      .trim(),
   ],
   authController.postSignup
 );

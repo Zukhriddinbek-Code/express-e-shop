@@ -20,7 +20,7 @@ router.post(
   "/add-product",
   [
     body("title", "Please enter title more than 3 chars!")
-      .isAlphanumeric()
+      .isString()
       .isLength({ min: 3 })
       .trim(),
     body("imageUrl", "Please enter valid image url!").isURL(),
@@ -39,7 +39,7 @@ router.post(
   "/edit-product",
   [
     body("title", "Please enter title more than 3 chars!")
-      .isAlphanumeric()
+      .isString()
       .isLength({ min: 3 })
       .trim(),
     body("imageUrl", "Please enter valid image url!").isURL(),

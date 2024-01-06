@@ -19,19 +19,15 @@ router.get("/products", isAuth, adminController.getProducts);
 router.post(
   "/add-product",
   [
-    body("title")
+    body("title", "Please enter title more than 3 chars!")
       .isAlphanumeric()
       .isLength({ min: 3 })
-      .trim()
-      .withMessage("Please enter title more than 3 chars!"),
-    body("imageUrl").isURL().withMessage("Please enter valid image url!"),
-    body("price")
-      .isFloat()
-      .withMessage("Please enter a number in floating point!ß"),
-    body("description")
+      .trim(),
+    body("imageUrl", "Please enter valid image url!").isURL(),
+    body("price", "Please enter a number in floating point!").isFloat(),
+    body("description", "Please enter description more than 5 chars!")
       .isLength({ min: 5, max: 100 })
-      .trim()
-      .withMessage("Please enter description more than 5 chars!"),
+      .trim(),
   ],
   isAuth,
   adminController.postAddProduct
@@ -42,19 +38,15 @@ router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post(
   "/edit-product",
   [
-    body("title")
+    body("title", "Please enter title more than 3 chars!")
       .isAlphanumeric()
       .isLength({ min: 3 })
-      .trim()
-      .withMessage("Please enter title more than 3 chars!"),
-    body("imageUrl").isURL().withMessage("Please enter valid image url!"),
-    body("price")
-      .isFloat()
-      .withMessage("Please enter a number in floating point!ß"),
-    body("description")
+      .trim(),
+    body("imageUrl", "Please enter valid image url!").isURL(),
+    body("price", "Please enter a number in floating point!").isFloat(),
+    body("description", "Please enter description more than 5 chars!")
       .isLength({ min: 5, max: 100 })
-      .trim()
-      .withMessage("Please enter description more than 5 chars!"),
+      .trim(),
   ],
   isAuth,
   adminController.postEditProduct

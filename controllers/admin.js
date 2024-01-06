@@ -17,6 +17,7 @@ exports.getAddProduct = (req, res, next) => {
     editing: false,
     errorMessage: message,
     hasError: false,
+    validationErrors: [],
   });
 };
 
@@ -42,6 +43,7 @@ exports.postAddProduct = (req, res, next) => {
         description: description,
       },
       errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array(),
     });
   }
 
@@ -89,7 +91,7 @@ exports.getEditProduct = (req, res, next) => {
         path: "/admin/edit-product",
         editing: editMode,
         product: product,
-        errorMessage: message,
+        errorMessage: false,
         hasError: false,
       });
     })

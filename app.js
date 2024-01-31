@@ -64,7 +64,7 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => {
-      throw new Error(Err);
+      throw new Error(err);
     });
 });
 

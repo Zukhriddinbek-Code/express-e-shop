@@ -41,7 +41,6 @@ router.post(
       .isString()
       .isLength({ min: 3 })
       .trim(),
-    body("imageUrl", "Please enter valid image url!").isURL(),
     body("price", "Please enter a number in floating point!").isFloat(),
     body("description", "Please enter description more than 5 chars!")
       .isLength({ min: 5, max: 100 })

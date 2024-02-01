@@ -13,6 +13,9 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 //csrf token
 const csrf = require("csurf");
 
+//middleware for handling multipart/form-data and uploading files
+const multer = require("multer");
+
 const MONGODB_URI =
   "mongodb+srv://zuhriddin_ganiev:8aEZ5BqVm5OVUA4U@cluster-zuhriddin.65mbqpl.mongodb.net/shop?retryWrites=true&w=majority";
 

@@ -116,6 +116,7 @@ app.use((error, req, res, next) => {
     path: "/500",
     isAuthenticated: req.session.isLoggedIn,
   });
+  console.log(error);
 });
 
 // { useNewUrlParser: true }

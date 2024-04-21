@@ -12,12 +12,13 @@ const flash = require("connect-flash");
 const MongoDBStore = require("connect-mongodb-session")(session);
 //csrf token
 const csrf = require("csurf");
+require("dotenv").config();
+const { mongo_url, port } = process.env;
 
 //middleware for handling multipart/form-data and uploading files
 const multer = require("multer");
 
-const MONGODB_URI =
-  "mongodb+srv://zuhriddin_ganiev:8aEZ5BqVm5OVUA4U@cluster-zuhriddin.65mbqpl.mongodb.net/shop?retryWrites=true&w=majority";
+const MONGODB_URI = mongo_url;
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
@@ -123,7 +124,8 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    app.listen(3000);
+    app.listen(port || 3000);
+    console.log("App running on 3000");
   })
   .catch((err) => {
     console.log(err);

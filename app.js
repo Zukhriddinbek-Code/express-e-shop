@@ -2,13 +2,17 @@
 //new changessdsdsds
 
 const path = require("path");
+const fs = require("fs");
 
 const express = require("express");
 const helmet = require("helmet");
+const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
+//node compression
+const compression = require("compression");
 //store session mongodb
 const MongoDBStore = require("connect-mongodb-session")(session);
 //csrf token
@@ -62,8 +66,16 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
 //sets secure response headers
 app.use(helmet());
+app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream }));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
